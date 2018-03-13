@@ -1,0 +1,41 @@
+version: '2'
+
+services:
+  nginx:
+    container_name: nginx-lb-skinfosec
+    build: ../nginx
+    links:
+      - app-1:app-1
+    ports:
+      - 3000:8585
+    depends_on:
+      - app-1
+
+  app-1:
+    container_name: node-skinfosec-1
+    image: node-skinfosec:skinfosec
+    ports:
+      - 3100:3000
+    environment:
+      KEYVALSTORE: /keyValStore_fabricClientOrg1
+      MEMBER_ID: certuser73
+      MEMBER_PWD: certuser73
+      CHAINCODE_ID: Certificate
+      CHAINCODE_VERSION: v1.2
+      CHANNEL_NAME: channel1
+      ORDERER_URL: grpcs://169.56.102.204:7050
+      ORDERER_SERVER_HOSTNAME: orderer8
+      ORDERER_TLS_CACERTS: server/api/config/bmt/crypto-config/ordererOrganizations/org0.com/orderers/orderer8/msp/tlscacerts/tlsca0-cert.pem
+      ORGS_ORG1_MSPID: org4
+      ORGS_ORG1_CA_URL: http://169.56.113.96:1843
+      ORGS_ORG1_CA_NAME: ca4
+      ORGS_ORG1_PEERS_PEER1_REQUESTS: grpcs://169.56.102.219:7051
+      ORGS_ORG1_PEERS_PEER1_EVENTS: grpcs://169.56.102.219:7053
+      ORGS_ORG1_PEERS_PEER1_SERVER_HOSTNAME: peer73
+      ORGS_ORG1_PEERS_PEER1_TLS_CA_CERTS: server/api/config/bmt/crypto-config/peerOrganizations/org4.com/peers/peer73/msp/tlscacerts/tlsca4-cert.pem
+      ORGS_ORG1_PEERS_PEER2_REQUESTS: grpcs://169.56.102.220:7051
+      ORGS_ORG1_PEERS_PEER2_EVENTS: grpcs://169.56.102.220:7053
+      ORGS_ORG1_PEERS_PEER2_SERVER_HOSTNAME: peer74
+      ORGS_ORG1_PEERS_PEER2_TLS_CA_CERTS: server/api/config/bmt/crypto-config/peerOrganizations/org4.com/peers/peer74/msp/tlscacerts/tlsca4-cert.pem
+      QUERY_TARGET_PEER: grpcs://169.56.102.219:7051
+      LOG_LEVEL: ERROR

@@ -1,0 +1,10 @@
+build
+node_modules
+#.env
+.idea/*
+keyValueStore_fabricClientorg1/*
+monitor/elasticsearch/data/*
+test/jmeter/bin/jmeter.log
+#test/jmeter/*.jmx
+tools/*.block
+tools/crypto/

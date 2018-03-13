@@ -1,0 +1,42 @@
+version: '2'
+
+services:
+  nginx:
+    container_name: nginx-lb-skinfosec
+    build: ./nginx
+    links:
+      - app-1:app-1
+    ports:
+      - 3000:8585
+    depends_on:
+      - app-1
+
+  app-1:
+    container_name: node-skinfosec-1
+    image: node-skinfosec:skinfosec
+    ports:
+      - 3100:3000
+    environment:
+      KEYVALSTORE: /keyValStore_fabricClientOrg1
+      MEMBER_ID: certuser1
+      MEMBER_PWD: cert!@#$$
+      CHAINCODE_ID: certificate
+      CHAINCODE_VERSION: v1.0
+      CHANNEL_NAME: mychannel
+      ORDERER_MSPID: OrdererMSP
+      ORDERER_URL: grpcs://169.56.102.243:7050
+      ORDERER_SERVER_HOSTNAME: brick111.KFBOrg0.com
+      ORDERER_TLS_CACERTS: server/api/config/local-test/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/cacerts/example.com-cert.pem
+      ORGS_ORG1_NAME: peerOrg1
+      ORGS_ORG1_MSPID: Org1MSP
+      ORGS_ORG1_CA_URL: https://169.56.102.242:1543
+      ORGS_ORG1_CA_NAME: ca1
+      ORGS_ORG1_PEERS_PEER1_REQUESTS: grpcs://169.56.101.219:7051
+      ORGS_ORG1_PEERS_PEER1_EVENTS: grpcs://169.56.101.219:7053
+      ORGS_ORG1_PEERS_PEER1_SERVER_HOSTNAME: peer0.org1.example.com
+      ORGS_ORG1_PEERS_PEER1_TLS_CA_CERTS: server/api/config/local-test/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/cacerts/org1.example.com-cert.pem
+      ORGS_ORG1_PEERS_PEER2_REQUESTS: grpcs://169.56.101.211:7051
+      ORGS_ORG1_PEERS_PEER2_EVENTS: grpcs://169.56.101.211:7053
+      ORGS_ORG1_PEERS_PEER2_SERVER_HOSTNAME: peer0.org1.example.com
+      ORGS_ORG1_PEERS_PEER2_TLS_CA_CERTS: server/api/config/local-test/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/cacerts/org1.example.com-cert.pem
+      LOG_LEVEL: ERROR

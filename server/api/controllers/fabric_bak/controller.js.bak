@@ -1,0 +1,17 @@
+import CertService from '../../services/cert.service';
+
+export class Controller {
+    query(req, res) {
+        CertService
+            .query(req, res)
+            .then(r => res.json(r));
+    }
+
+    certificate(req, res) {
+        CertService
+            .certificate(req, res)
+            .then(r => res.json(r));
+    }
+}
+
+export default new Controller();

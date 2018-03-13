@@ -1,0 +1,5 @@
+apps:
+  - script   : 'main.js'
+    name     : 'node-skinfosec'
+    exec_mode: 'cluster'
+    instances: 2

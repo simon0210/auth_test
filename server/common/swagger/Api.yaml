@@ -1,0 +1,484 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Core Identity SDK
+  description: API Gateway for Hyperldeger fabric
+
+basePath: /api/v1
+tags:
+  - name: Examples
+    description: Simple example endpoints
+
+# security:
+#  - oauth2:
+#    $ref: security/github/accessCode
+#  - apitoken:
+#    type: "header"
+#    name: "api_key"
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+definitions:
+  enc:
+    required:
+      - message
+      - privPem
+    properties:
+      message:
+        type: string
+      privPem:
+        type: string
+  dec:
+    required:
+      - hashMsg
+      - signMsg
+      - pubPem
+    properties:
+      hashMsg:
+        type: string
+      signMsg:
+        type: string
+      pubPem:
+        type: string
+  user:
+    required:
+      - id
+      - password
+    properties:
+      id:
+        type: string
+#        minLength: 4
+#        pattern: "^[a-zA-Z0-9- ]+$"
+      password:
+        type: string
+  valid:
+      required:
+        - userID
+        - hashMsg
+        - signMsg
+        - certPem
+      properties:
+        userID:
+          type: string
+        hashMsg:
+          type: string
+        signMsg:
+          type: string
+        certPem:
+          type: string
+  csr:
+    required:
+      - ID
+      - Contry
+      - State
+      - Location
+      - Organization
+      - OrganizationUnit
+      - CompanyName
+      - SubjectName
+    properties:
+      ID:
+#        description: ID
+#        defaultValue: available
+        type: string
+      Contry:
+#        description: Status values that need to be considered for filter
+#        defaultValue: available
+        type: string
+      State:
+#        description: Status values that need to be considered for filter
+#        defaultValue: available
+        type: string
+      Location:
+#        description: Status values that need to be considered for filter
+#        defaultValue: available
+          type: string
+      Organization:
+#        description: Status values that need to be considered for filter
+#        defaultValue: available
+        type: string
+      OrganizationUnit:
+#        description: Status values that need to be considered for filter
+#        defaultValue: available
+        type: string
+      CompanyName:
+#        description: Status values that need to be considered for filter
+#        defaultValue: available
+        type: string
+      SubjectName:
+#        description: Status values that need to be considered for filter
+#        defaultValue: available
+        type: string
+      encType:
+#        description: Status values that need to be considered for filter
+        type: string
+        enum: ["RSA", "ECDSA"]
+
+  csreq:
+    required:
+      - ID
+      - Contry
+      - State
+      - Location
+      - Organization
+      - OrganizationUnit
+      - CompanyName
+      - SubjectName
+      - pubPemString
+      - hashMsg
+      - signMsg
+    properties:
+      ID:
+        type: string
+      Contry:
+        type: string
+      State:
+        type: string
+      Location:
+        type: string
+      Organization:
+        type: string
+      OrganizationUnit:
+        type: string
+      CompanyName:
+        type: string
+      SubjectName:
+        type: string
+      pubPemString:
+        type: string
+      hashMsg:
+        type: string
+      signMsg:
+        type: string
+
+  revokeRequest:
+    required:
+      - userId
+      - hashMsg
+      - signMsg
+      - revokeType
+    properties:
+      userId:
+        type: string
+      hashMsg:
+        type: string
+      signMsg:
+        type: string
+      revokeType:
+        type: string
+        enum: ["ACTIVE", "PAUSED", "EXPIRED", "FORCE_EXPIRED"]
+  test:
+      required:
+        - pemString
+      properties:
+        pemString:
+          type: string
+paths:
+
+#  /info:
+#    get:
+#      tags:
+#        - Interact with Fabric
+#      description: Get server information.
+#      responses:
+#        200:
+#          description: Successfully retrieved server information
+
+  /echo:
+      get:
+        tags:
+          - LIVE CHECK
+        description: LIVE CHECK
+        parameters:
+          - name: MSG
+            in: query
+            required: true
+            type: string
+        responses:
+          200:
+            description: ECHO MESSAGE
+
+  /cert:
+      post:
+        tags:
+          - X.509
+        description: X.509
+        parameters:
+          - name: CSR
+            in: body
+            description: Create X.509 Certificate
+            required: true
+            schema:
+              $ref: "#/definitions/csr"
+        responses:
+          200:
+            description: Successfully retrieved server information
+      put:
+        tags:
+          - X.509
+        description: X.509
+        parameters:
+          - name: revokeRequest
+            in: body
+            description: Revoke X.509 Certificate
+            required: true
+            schema:
+              $ref: "#/definitions/revokeRequest"
+        responses:
+          200:
+            description: Successfully retrieved server information
+
+#  /cert/pub:
+#      post:
+#        tags:
+#          - X.509
+#        description: X.509
+#        consumes:
+#          - application/x-www-form-urlencoded
+#        parameters:
+#          - name: ID
+#            in: formData
+#            required: ture
+#            type: string
+#            default: ID
+#
+#          - name: Contry
+#            in: formData
+#            required: ture
+#            type: string
+#            default: Contry
+#
+#          - name: State
+#            in: formData
+#            required: ture
+#            type: string
+#            default: State
+#
+#          - name: Location
+#            in: formData
+#            required: ture
+#            type: string
+#            default: Location
+#
+#          - name: Organization
+#            in: formData
+#            required: ture
+#            type: string
+#            default: Organization
+#
+#          - name: OrganizationUnit
+#            in: formData
+#            required: ture
+#            type: string
+#            default: OrganizationUnit
+#
+#          - name: CompanyName
+#            in: formData
+#            required: ture
+#            type: string
+#            default: CompanyName
+#
+#          - name: SubjectName
+#            in: formData
+#            required: ture
+#            type: string
+#            default: SubjectName
+#
+#          - name: pubPemString
+#            in: formData
+#            required: true
+#            type: string
+#            default: pubPemString
+#
+#        responses:
+#          200:
+#            description: Successfully retrieved server information
+
+  /cert/pub:
+        post:
+          tags:
+            - X.509
+          description: X.509
+          parameters:
+            - name: CSR
+              in: body
+              description: Create X.509 Certificate
+              required: true
+              schema:
+                $ref: "#/definitions/csreq"
+          responses:
+            200:
+              description: Successfully retrieved server information
+
+  /cert/pub2:
+        post:
+          tags:
+            - X.509
+          description: X.509
+          parameters:
+            - name: CSR
+              in: body
+              description: Create X.509 Certificate
+              required: true
+              schema:
+                $ref: "#/definitions/csreq"
+          responses:
+            200:
+              description: Successfully retrieved server information
+
+  /cert/update:
+    post:
+      tags:
+        - X.509
+      description: X.509
+      parameters:
+        - name: CSR
+          in: body
+          description: Create X.509 Certificate
+          required: true
+          schema:
+            $ref: "#/definitions/csr"
+      responses:
+        200:
+          description: Successfully retrieved server information
+
+  /cert/validation:
+    post:
+      tags:
+        - X.509
+      description: X.509
+      parameters:
+        - name: CSR
+          in: body
+          description: Create X.509 Certificate
+          required: true
+          schema:
+            $ref: "#/definitions/valid"
+      responses:
+        200:
+          description: Successfully retrieved server information
+
+  /enc:
+    post:
+      tags:
+        - SIGNATURE
+      description: SIGNATURE
+      parameters:
+         - name: ENC
+           in: body
+           description: Encrypt Message
+           required: true
+           schema:
+              $ref: "#/definitions/enc"
+      responses:
+        200:
+          description: Successfully retrieved server information
+
+  /enc/validation:
+    post:
+      tags:
+        - SIGNATURE
+      description: SIGNATURE
+      parameters:
+        - name: DEC
+          in: body
+          description: Validate Encrypt Message
+          required: true
+          schema:
+            $ref: "#/definitions/dec"
+      responses:
+        200:
+          description: Returns result of validation
+
+  /query:
+    get:
+      tags:
+        - QUERY
+      description: QUERY
+      parameters:
+        - name: userID
+          in: query
+          description: Unique Id of User
+          required: true
+          type: string
+      responses:
+        200:
+          description: Returns result of user's certification
+
+  /register:
+    post:
+      tags:
+        - ACCOUNT
+      description: Caution! Only purpose for development environment.
+      parameters:
+        - name: enrollmentID
+          in: query
+          description: enrollmentID
+          required: true
+          type: string
+        - name: organization
+          in: query
+          type: string
+          required: true
+          enum: ["ORG1", "ORG2"]
+      responses:
+        200:
+          description: Successfully retrieved user's esert information
+
+  /enroll:
+    post:
+      tags:
+        - ACCOUNT
+      description: Enroll a registered user in order to receive a signed X509 certificate
+      parameters:
+        - name: enrollmentID
+          in: query
+          description: enrollmentID
+          required: true
+          type: string
+        - name: enrollmentSecret
+          in: query
+          description: enrollmentSecret
+          required: true
+          type: string
+        - name: organization
+          in: query
+          type: string
+          required: true
+          enum: ["ORG1", "ORG2"]
+      responses:
+        200:
+          description: Successfully retrieved user's esert information
+
+  /init:
+    get:
+      tags:
+        - NETWORK
+      description: Caution! Only purpose for development environment.
+      responses:
+        200:
+          description: Successfully retrieved user's esert information
+
+#  /examples:
+#    get:
+#      tags:
+#        - Examples
+#      description: Fetch all examples
+#      responses:
+#        200:
+#          description: Returns all examples
+#    post:
+#      tags:
+#        - Examples
+#      description: Create a new example
+#      parameters:
+#        - name: body
+#          in: body
+#          description: number of items to skip
+#          required: true
+#      responses:
+#        200:
+#          description: Returns all examples

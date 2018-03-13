@@ -1,0 +1,52 @@
+version: '2'
+
+services:
+  nginx:
+    container_name: nginx-lb-skinfosec
+    build: ./nginx
+    links:
+      - app-1:app-1
+      - app-2:app-2
+    ports:
+      - 3000:8585
+    depends_on:
+      - app-1
+      - app-2
+
+  app-1:
+    container_name: node-skinfosec-1
+    image: node-skinfosec:skinfosec
+    ports:
+      - 3100:3000
+    environment:
+      CHAINNAME: mychannel
+      MSPID: Org1MSP
+      KEYVALSTORE: /keyValStore_fabricClientOrg1
+      MEMBER_ID: simon
+      CHAINCODE_ID: cert
+      CHAINCODE_VERSION: v001
+      CA_URL: https://172.21.0.1:7054
+      ORDERER_URL: grpc://172.21.0.1:7050
+      INSTALL_TARGET_PEER_URL: grpc://172.21.0.1:7051, grpc://172.21.0.1:8051
+      PEER_URL: grpc://172.21.0.1:7051, grpc://172.21.0.1:8051
+      EVENT_URL: grpc://172.21.0.1:7053
+      LOGLEVEL: error
+
+  app-2:
+    container_name: node-skinfosec-2
+    image: node-skinfosec:skinfosec
+    ports:
+      - 3200:3000
+    environment:
+      CHAINNAME: mychannel
+      MSPID: Org1MSP
+      KEYVALSTORE: /keyValStore_fabricClientOrg1
+      MEMBER_ID: simon
+      CHAINCODE_ID: cert
+      CHAINCODE_VERSION: v001
+      CA_URL: https://172.21.0.1:7054
+      ORDERER_URL: grpc://172.21.0.1:7050
+      INSTALL_TARGET_PEER_URL: grpc://172.21.0.1:7051, grpc://172.21.0.1:8051
+      PEER_URL: grpc://172.21.0.1:7051, grpc://172.21.0.1:8051
+      EVENT_URL: grpc://172.21.0.1:7053
+      LOGLEVEL: error
