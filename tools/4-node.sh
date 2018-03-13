@@ -11,7 +11,7 @@ docker run -itd \
     -e FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.skinfosec.com-cert.pem \
     -e FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/f1622dd2b892a01322708391fa3a6dae85cecc34dd5ea3e188e4aa5c315fd7d4_sk \
     -v $(pwd)/crypto-config/peerOrganizations/org1.skinfosec.com/ca/:/etc/hyperledger/fabric-ca-server-config \
-    hyperledger/fabric-ca:x86_64-1.0.2 \
+    hyperledger/fabric-ca:x86_64-1.1.0-rc1 \
     sh -c 'fabric-ca-server start -b admin:adminpw'
 
 docker run -itd \
@@ -25,7 +25,7 @@ docker run -itd \
     -e FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.skinfosec.com-cert.pem \
     -e FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/7cf8f91cef5a73a1da242abe4fd47dd7b6f94a0a7c7356e5c1e4156d7fe034e8_sk \
     -v $(pwd)/crypto-config/peerOrganizations/org2.skinfosec.com/ca/:/etc/hyperledger/fabric-ca-server-config \
-    hyperledger/fabric-ca:x86_64-1.0.2 \
+    hyperledger/fabric-ca:x86_64-1.1.0-rc1 \
     sh -c 'fabric-ca-server start -b admin:adminpw'
 
 docker run -itd \
@@ -47,12 +47,11 @@ docker run -itd \
     -v $(pwd)/crypto-config/ordererOrganizations/skinfosec.com/orderers/orderer.skinfosec.com/msp:/var/hyperledger/orderer/msp \
     -v $(pwd)/crypto-config/ordererOrganizations/skinfosec.com/orderers/orderer.skinfosec.com/tls/:/var/hyperledger/orderer/tls \
     --workdir /opt/gopath/src/github.com/hyperledger/fabric \
-    hyperledger/fabric-orderer:x86_64-1.0.2 \
+    hyperledger/fabric-orderer:x86_64-1.1.0-rc1 \
     orderer
 
 docker run -itd --link orderer.skinfosec.com \
       --name peer0.org1.skinfosec.com -p 7051:7051 -p 7053:7053 -p 6060:6060 --network="skinfosec-blockchain-net"  \
-      --log-driver=gelf --log-opt gelf-address=udp://localhost:5000 --log-opt tag="peer0.org1" \
       -e CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock \
       -e CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=skinfosec-blockchain-net \
       -e CORE_LOGGING_LEVEL=DEBUG \
@@ -73,8 +72,8 @@ docker run -itd --link orderer.skinfosec.com \
       -v $(pwd)/crypto-config/peerOrganizations/org1.skinfosec.com/peers/peer0.org1.skinfosec.com/msp:/etc/hyperledger/fabric/msp \
       -v $(pwd)/crypto-config/peerOrganizations/org1.skinfosec.com/peers/peer0.org1.skinfosec.com/tls:/etc/hyperledger/fabric/tls \
       --workdir /opt/gopath/src/github.com/hyperledger/fabric \
-      hyperledger/fabric-peer:x86_64-1.0.2 \
-      peer node start --peer-defaultchain=false
+      hyperledger/fabric-peer:x86_64-1.1.0-rc1 \
+      peer node start
 
 docker run -itd --link orderer.skinfosec.com --link peer0.org1.skinfosec.com \
     --name peer1.org1.skinfosec.com -p 8051:7051 -p 8053:7053 -p 6061:6061 --network="skinfosec-blockchain-net"  \
@@ -100,8 +99,8 @@ docker run -itd --link orderer.skinfosec.com --link peer0.org1.skinfosec.com \
     -v $(pwd)/crypto-config/peerOrganizations/org1.skinfosec.com/peers/peer1.org1.skinfosec.com/msp:/etc/hyperledger/fabric/msp \
     -v $(pwd)/crypto-config/peerOrganizations/org1.skinfosec.com/peers/peer1.org1.skinfosec.com/tls:/etc/hyperledger/fabric/tls \
     --workdir /opt/gopath/src/github.com/hyperledger/fabric \
-    hyperledger/fabric-peer:x86_64-1.0.2 \
-    peer node start --peer-defaultchain=false
+    hyperledger/fabric-peer:x86_64-1.1.0-rc1 \
+    peer node start
 
 docker run -itd --link orderer.skinfosec.com \
     --name peer0.org2.skinfosec.com -p 9051:7051 -p 9053:7053 -p 6062:6062 --network="skinfosec-blockchain-net"  \
@@ -126,8 +125,8 @@ docker run -itd --link orderer.skinfosec.com \
     -v $(pwd)/crypto-config/peerOrganizations/org2.skinfosec.com/peers/peer0.org2.skinfosec.com/msp:/etc/hyperledger/fabric/msp \
     -v $(pwd)/crypto-config/peerOrganizations/org2.skinfosec.com/peers/peer0.org2.skinfosec.com/tls:/etc/hyperledger/fabric/tls \
     --workdir /opt/gopath/src/github.com/hyperledger/fabric \
-    hyperledger/fabric-peer:x86_64-1.0.2 \
-    peer node start --peer-defaultchain=false
+    hyperledger/fabric-peer:x86_64-1.1.0-rc1 \
+    peer node start 
 
 docker run -itd --link orderer.skinfosec.com --link peer0.org2.skinfosec.com \
     --name peer1.org2.skinfosec.com -p 10051:7051 -p 10053:7053 -p 6063:6063 --network="skinfosec-blockchain-net"  \
@@ -153,8 +152,8 @@ docker run -itd --link orderer.skinfosec.com --link peer0.org2.skinfosec.com \
     -v $(pwd)/crypto-config/peerOrganizations/org2.skinfosec.com/peers/peer1.org2.skinfosec.com/msp:/etc/hyperledger/fabric/msp \
     -v $(pwd)/crypto-config/peerOrganizations/org2.skinfosec.com/peers/peer1.org2.skinfosec.com/tls:/etc/hyperledger/fabric/tls \
     --workdir /opt/gopath/src/github.com/hyperledger/fabric \
-    hyperledger/fabric-peer:x86_64-1.0.2 \
-    peer node start --peer-defaultchain=false
+    hyperledger/fabric-peer:x86_64-1.1.0-rc1 \
+    peer node start 
 
 docker run -itd \
     --network="skinfosec-blockchain-net" \
@@ -176,8 +175,8 @@ docker run -itd \
     -v $(pwd)/channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts \
     -v $(pwd):/opt/gopath/src/github.com/hyperledger/fabric/peer \
     --workdir /opt/gopath/src/github.com/hyperledger/fabric/peer \
-    hyperledger/fabric-tools:x86_64-1.0.2  \
-    peer node start --peer-defaultchain=false
+    hyperledger/fabric-tools:x86_64-1.1.0-rc1  \
+
 
 docker run -itd \
     --network="skinfosec-blockchain-net" \
@@ -199,5 +198,5 @@ docker run -itd \
     -v $(pwd)/channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts \
     -v $(pwd):/opt/gopath/src/github.com/hyperledger/fabric/peer \
     --workdir /opt/gopath/src/github.com/hyperledger/fabric/peer \
-    hyperledger/fabric-tools:x86_64-1.0.2  \
-    peer node start --peer-defaultchain=false
+    hyperledger/fabric-tools:x86_64-1.1.0-rc1  \
+
