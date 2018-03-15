@@ -2,7 +2,6 @@
 
 docker run -itd \
     --name ca-org1 -p 7054:7054 --network="skinfosec-blockchain-net" \
-    --log-driver=gelf --log-opt gelf-address=udp://localhost:5000 --log-opt tag="ca-org1" \
     -e FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server \
     -e FABRIC_CA_SERVER_CA_NAME=ca-org1 \
     -e FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.skinfosec.com-cert.pem \
@@ -16,7 +15,6 @@ docker run -itd \
 
 docker run -itd \
     --name ca-org2 -p 8054:7054 --network="skinfosec-blockchain-net" \
-    --log-driver=gelf --log-opt gelf-address=udp://localhost:5000 --log-opt tag="ca-org2" \
     -e FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server \
     -e FABRIC_CA_SERVER_CA_NAME=ca-org2 \
     -e FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.skinfosec.com-cert.pem \
@@ -30,7 +28,6 @@ docker run -itd \
 
 docker run -itd \
     --name orderer.skinfosec.com -p 7050:7050 -p 6065:6065 --network="skinfosec-blockchain-net" \
-    --log-driver=gelf --log-opt gelf-address=udp://localhost:5000 --log-opt tag="orderer" \
     -e ORDERER_GENERAL_LOGLEVEL=debug \
     -e ORDERER_GENERAL_LISTENADDRESS=0.0.0.0 \
     -e ORDERER_GENERAL_GENESISMETHOD=file \
@@ -77,7 +74,6 @@ docker run -itd --link orderer.skinfosec.com \
 
 docker run -itd --link orderer.skinfosec.com --link peer0.org1.skinfosec.com \
     --name peer1.org1.skinfosec.com -p 8051:7051 -p 8053:7053 -p 6061:6061 --network="skinfosec-blockchain-net"  \
-    --log-driver=gelf --log-opt gelf-address=udp://localhost:5000 --log-opt tag="peer1.org1" \
     -e CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock \
     -e CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=skinfosec-blockchain-net \
     -e CORE_LOGGING_LEVEL=DEBUG \
@@ -104,7 +100,6 @@ docker run -itd --link orderer.skinfosec.com --link peer0.org1.skinfosec.com \
 
 docker run -itd --link orderer.skinfosec.com \
     --name peer0.org2.skinfosec.com -p 9051:7051 -p 9053:7053 -p 6062:6062 --network="skinfosec-blockchain-net"  \
-    --log-driver=gelf --log-opt gelf-address=udp://localhost:5000 --log-opt tag="peer0.org2" \
     -e CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock \
     -e CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=skinfosec-blockchain-net \
     -e CORE_LOGGING_LEVEL=DEBUG \
@@ -130,7 +125,6 @@ docker run -itd --link orderer.skinfosec.com \
 
 docker run -itd --link orderer.skinfosec.com --link peer0.org2.skinfosec.com \
     --name peer1.org2.skinfosec.com -p 10051:7051 -p 10053:7053 -p 6063:6063 --network="skinfosec-blockchain-net"  \
-    --log-driver=gelf --log-opt gelf-address=udp://localhost:5000 --log-opt tag="peer1.org2" \
     -e CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock \
     -e CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=skinfosec-blockchain-net \
     -e CORE_LOGGING_LEVEL=DEBUG \
