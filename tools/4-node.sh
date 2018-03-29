@@ -193,4 +193,3 @@ docker run -itd \
     -v $(pwd):/opt/gopath/src/github.com/hyperledger/fabric/peer \
     --workdir /opt/gopath/src/github.com/hyperledger/fabric/peer \
     hyperledger/fabric-tools:x86_64-1.1.0-rc1  \
-
