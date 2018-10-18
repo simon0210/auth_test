@@ -1,7 +1,7 @@
 {
-  "name": "SKBC",
+  "name": "KTBC",
   "version": "1.0.0",
-  "description": "SKBC COMMON SDK API",
+  "description": "KTBC COMMON SDK API",
   "main": "index.js",
   "scripts": {
     "start": "cd build && node main",
@@ -20,7 +20,8 @@
     "fabric-ca-client": "1.0.2",
     "jsrsasign": "6.2.2",
     "jsrsasign-util": "^1.0.0",
-    "express-oauth-server": "^2.0.0-b1"
+    "express-oauth-server": "^2.0.0-b1",
+    "grpc": "1.10.1"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.14.0",
@@ -30,5 +31,5 @@
     "tape": "^4.5.1",
     "tape-promise": "^1.1.0"
   },
-  "author": "SK Infosec New Ict Team <kim-sk@sk.com>"
+  "author": "KT BC Enabling Tech.1 <seoungkwang.kim@kt.com>"
 }

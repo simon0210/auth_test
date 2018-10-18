@@ -1,7 +1,3 @@
-/**
- * Copyright 2017 SK Infosec All Rights Reserved.
- */
-
 'use strict';
 
 import bunyan from 'bunyan';
